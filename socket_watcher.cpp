@@ -100,8 +100,14 @@ void SocketWatcher::New(const Nan::FunctionCallbackInfo<Value>& info)
     info.GetReturnValue().Set(info.This());
   } else {
     // Invoked as plain function `SocketWatcher(...)`, turn into construct call.
+
+    Isolate* isolate = info.GetIsolate();
+    Local<Context> context = isolate->GetCurrentContext();
+    const int argc = 1;
+    Local<Value> argv[argc] = { info[0] };
     Local<Function> cons = Nan::New<Function>(constructor);
-    info.GetReturnValue().Set(cons->NewInstance());
+    Local<Object> instance = cons->NewInstance(context,argc,argv).ToLocalChecked();
+    info.GetReturnValue().Set(instance);
   }
 }
 
