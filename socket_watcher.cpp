@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Toby Ealden.
+on
 // Copyright (c) 2014 Martin Man.
 // vim: ts=2 sw=2 et
 
@@ -100,14 +100,9 @@ void SocketWatcher::New(const Nan::FunctionCallbackInfo<Value>& info)
     info.GetReturnValue().Set(info.This());
   } else {
     // Invoked as plain function `SocketWatcher(...)`, turn into construct call.
-
-    Isolate* isolate = info.GetIsolate();
-    Local<Context> context = isolate->GetCurrentContext();
-    const int argc = 1;
-    Local<Value> argv[argc] = { info[0] };
     Local<Function> cons = Nan::New<Function>(constructor);
-    Local<Object> instance = cons->NewInstance(context,argc,argv).ToLocalChecked();
-    info.GetReturnValue().Set(instance);
+    info.GetReturnValue().Set(Nan::NewInstance(cons).ToLocalChecked());
+
   }
 }
 
